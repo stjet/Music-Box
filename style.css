@@ -1,0 +1,49 @@
+.note-item {
+  border-right: 2px solid black;
+  border-top: 2px solid black;
+  height: 35px;
+  width: 35px;
+  display: inline-block;
+  text-align: center;
+}
+
+.first-item {
+  border-left: 2px solid black;
+}
+
+.last-row-item {
+  border-bottom: 2px solid black;
+}
+
+.selected {
+  background-color: lightblue;
+}
+
+.row {
+  line-height: 0;
+  white-space: nowrap;
+}
+
+#settings {
+  white-space: nowrap;
+}
+
+.top {
+  width: 36.6px;
+  display: inline-block;
+  height: 15px;
+}
+
+.current {
+  background-color: red;
+}
+
+#grid-container {
+  height: 85vh;
+  width: 100%;
+  overflow: scroll;
+  padding-bottom: 10px;
+}
+/*
+breakpoints at 600, 900, 1200, 1800
+*/

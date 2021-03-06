@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>repl.it</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/recorderjs/0.1.0/recorder.min.js"></script>
+<script src="script.js"></script>
+    <div id="grid-container">
+      <div id="top"></div>
+      <div id="note-grid">
+    </div>
+    </div>
+    <div id="settings">
+      <input type="button" value="Play" onclick="onclick_play()" id="play">
+      <label for="columns">Columns:</label>
+      <input type="number" min="2" max="300" value="24" id="columns" onchange="updateColumns()">
+      <label for="tempo">Tempo:</label>
+      <input type="number" min="40" max="500" value="120" id="tempo">
+      <label for="gap">Note Gap (milliseconds):</label>
+      <input type="number" min="0" max="150" value="50" id="gap">
+      <select id="type" onchange="type_change()">
+        <option value="square">Square</option>
+        <option value="sine">Sine</option>
+        <option value="sawtooth">Sawtooth</option>
+        <option value="triangle">Triangle</option>
+      </select>
+      <input type="button" value="Turn Click Sound Off" onclick="toggle_click_sound()" id="click-sound">
+      <input type="button" value="Turn Loop On" onclick="toggle_loop()" id="loop">
+      <input type="button" value="Import" onclick="document.getElementById('file-input').click();" id="import">
+      <input type="button" value="Export" onclick="export_notes()" id="export">
+      <input id="file-input" type="file" name="name" style="display: none;" onchange="file_input()">
+    </div>
+    
+    <script>
+      let column_number_previous = 0;
+      let type = "square";
+      let click_sound = true;
+      let loop = false;
+      let stop = false;
+      //make the rows
+      let notes = ["G#5", "G5", "F#5", "F5", "E5", "D#5", "D5", "C#5", "C5", "B5", "A#5", "A5", "G#4", "G4", "F#4", "F4", "E4", "D#4", "D4", "C#4", "C4", "B4", "A#4", "A4",  "G#3", "G3", "F#3", "F3", "E3", "D#3", "D3", "C#3", "C3", "B3", "A#3", "A3"];
+      let octave3 = ["G#3", "G3", "F#3", "F3", "E3", "D#3", "D3", "C#3", "C3", "B3", "A#3", "A3"];
+      let octave4 = ["G#4", "G4", "F#4", "F4", "E4", "D#4", "D4", "C#4", "C4", "B4", "A#4", "A4"];
+      let octave5 = ["G#5", "G5", "F#5", "F5", "E5", "D#5", "D5", "C#5", "C5", "B5", "A#5", "A5"];
+      //to front "G#5", "G5", "F#5", "F5", "E5", "D#5", "D5", "C#5", "C5", "B5", "A#5", "A5", 
+      //to back "G#3", "G3", "F#3", "F3", "E3", "D#3", "D3", "C#3", "C3", "B3", "A#3", "A3"
+      //["G#4", "G4", "F#4", "F4", "E4", "D#4", "D4", "C#4", "C4", "B4", "A#4", "A4"]
+      let frequencies = [1661.22, 1567.98, 1479.98, 1396.91, 1318.51, 1244.51, 1174.66, 1108.73, 1046.5, 987.77, 932.33, 880, 830.61, 783.99, 739.99, 698.46, 659.26, 622.25, 587.33, 554.37, 523.25, 493.88, 466.16, 440, 415.3, 392, 369.99, 349.23, 329.63, 311.13, 293.66, 277.18, 261.63, 246.94, 233.08, 220];
+      //to front 1661.22, 1567.98, 1479.98, 1396.91, 1318.51, 1244.51, 1174.66, 1108.73, 1046.5, 987.77, 932.33, 880
+      //to back 415.3, 392, 369.99, 349.23, 329.63, 311.13, 293.66, 277.18, 261.63, 246.94, 233.08, 220
+      //[830.61, 783.99, 739.99, 698.46, 659.26, 622.25, 587.33, 554.37, 523.25, 493.88, 466.16, 440]
+      let note_grid = document.getElementById("note-grid");
+      for (i = 0; i < notes.length; i++) {
+        let row = document.createElement("SPAN");
+        row.setAttribute("id", String(i)); 
+        row.setAttribute("class","row");
+        note_grid.appendChild(row);
+        let br = document.createElement("BR");
+        note_grid.appendChild(br);
+      }
+      updateColumns();
+    </script>
+  </body>
+</html>
