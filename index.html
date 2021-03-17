@@ -8,6 +8,7 @@
   </head>
   <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/recorderjs/0.1.0/recorder.min.js"></script>
+    <script src="crunker/crunker.js"></script>
 <script src="script.js"></script>
     <div id="grid-container">
       <div id="top"></div>
@@ -33,9 +34,11 @@
       <input type="button" value="Import" onclick="document.getElementById('file-input').click();" id="import">
       <input type="button" value="Export" onclick="export_notes()" id="export">
       <input id="file-input" type="file" name="name" style="display: none;" onchange="file_input()">
+      <input type="button" value="Save (As File)" onclick="export_as_file()" id="export">
     </div>
     
     <script>
+
       let column_number_previous = 0;
       let type = "square";
       let click_sound = true;

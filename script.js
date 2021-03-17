@@ -1,7 +1,7 @@
 //make sure import bug is fixed. when playing, low octaves do not play... why??? (Empty string passed to getElementById() ???)
 //above probably fixed
+//https://stackoverflow.com/questions/58029703/is-it-possible-to-convert-frequency-hertz-array-to-audiobuffer-using-javascript
 function export_notes() {
-  console.log("a")
   let file_contents = String(document.getElementById("tempo").value)+"|"+type+"|"+document.getElementById("gap").value+"\n";
   for (i = 0; i < notes.length; i++) {
     for (j = 0; j < document.getElementById("columns").value; j++) {
@@ -161,7 +161,6 @@ async function play_note() {
         let oscillator = audioCtx.createOscillator();
         oscillator.type = type;
         oscillator.frequency.value = frequencies[notes.indexOf(to_play[i])];
-        console.log(to_play[i])
         oscillator.connect(audioCtx.destination);
       to_play_audio.push(oscillator);
       }
@@ -202,26 +201,48 @@ function onclick_play() {
   }
 }
 
-//mp4 or wav or whatever
-function export_as_file() {
-  //iterate through notes, make oscillator nodes
-  let buffer_data = [];
-  for (j = 0; j < document.getElementById("columns").value; j++) {
-    let column_notes = [];
+async function export_as_file() {
+  //maybe use blob url https://stackoverflow.com/questions/60431835/how-to-convert-a-blob-url-to-a-audio-file-and-save-it-to-the-server
+  //https://github.com/jackedgson/crunker
+  function createOscillators(context, notes) {
+    notes.reduce((offset, [ frequency, duration ]) => {
+        const oscillatorNode = context.createOscillator();
+        oscillatorNode.frequency.value = frequency;
+        oscillatorNode.start();
+        oscillatorNode.stop(duration);
+        oscillatorNode.connect(context.destination);
+        return duration;
+    }, context.currentTime);
+  }
+  let tempo = Number(document.getElementById("tempo").value);
+  let columns = document.getElementById("columns");
+  let crunker = new Crunker();
+  let buffers = [];
+  for (j = 0; j < columns.value; j++) {
+    let notes = [];
     for (i = 0; i < notes.length; i++) {
       let note = document.getElementById(notes[i]+"-"+String(j));
       if (note.classList.contains("selected")) {
-        column_notes.push(notes[i]);
+        notes.push([frequencies[notes.indexOf(notes[i])], 60/tempo])
       }
     }
-    //somehow combine all notes in column_notes, then get the node buffer data
-    column_buffer_data = 0;
-    if (j == document.getElementById("columns").value-1) {
-      buffer_data.push(column_buffer_data);
-    }
+    let length_seconds = 60/tempo*columns.value;
+    console.log(length_seconds)
+    let sampleRate = 44100;
+    const offlineAudioContext = new OfflineAudioContext({ length: length_seconds * sampleRate, sampleRate });
+    createOscillators(offlineAudioContext, notes);
+    let buffer = await offlineAudioContext.startRendering();
+    buffers.push(buffer);
   }
-  //use https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode , combine buffer data and turn into file
-  //https://www.russellgood.com/how-to-convert-audiobuffer-to-audio-file/
+  //combine
+  console.log(buffers)
+  let final_buffer = await crunker.concatAudio(buffers)
+  var song = audioCtx.createBufferSource();
+  song.buffer = final_buffer;
+  song.connect(audioCtx.destination);
+  song.start();
+  let output = crunker.export(final_buffer, "audio/mp3");
+  crunker.download(output.blob, "tune");
 }
 
 async function file_input() {
@@ -237,7 +258,6 @@ async function file_input() {
   updateColumns();
   for (i = 0; i < input_file.length; i++) {
     let row = input_file[i];
-    console.log(row)
     let columns = row.length;
     for (j = 0; j < columns; j++) {
       let note = document.getElementById(notes[i]+"-"+String(j));
