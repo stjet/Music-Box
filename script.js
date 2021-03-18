@@ -223,7 +223,7 @@ async function export_as_file() {
     for (i = 0; i < notes.length; i++) {
       let note = document.getElementById(notes[i]+"-"+String(j));
       if (note.classList.contains("selected")) {
-        column_notes.push([frequencies[notes.indexOf(notes[i])], 60/tempo])
+        column_notes.push([frequencies[notes.indexOf(notes[i])], 60/tempo]);
         console.log(frequencies[notes.indexOf(notes[i])])
       }
     }
