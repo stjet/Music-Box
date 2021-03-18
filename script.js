@@ -219,28 +219,25 @@ async function export_as_file() {
   let crunker = new Crunker();
   let buffers = [];
   for (j = 0; j < columns.value; j++) {
-    let notes = [];
+    let column_notes = [];
     for (i = 0; i < notes.length; i++) {
       let note = document.getElementById(notes[i]+"-"+String(j));
       if (note.classList.contains("selected")) {
-        notes.push([frequencies[notes.indexOf(notes[i])], 60/tempo])
+        column_notes.push([frequencies[notes.indexOf(notes[i])], 60/tempo])
+        console.log(frequencies[notes.indexOf(notes[i])])
       }
     }
-    let length_seconds = 60/tempo*columns.value;
-    console.log(length_seconds)
+    let length_seconds = 60/tempo;
     let sampleRate = 44100;
     const offlineAudioContext = new OfflineAudioContext({ length: length_seconds * sampleRate, sampleRate });
-    createOscillators(offlineAudioContext, notes);
+    createOscillators(offlineAudioContext, column_notes);
     let buffer = await offlineAudioContext.startRendering();
     buffers.push(buffer);
+    console.log(buffer)
   }
   //combine
   console.log(buffers)
-  let final_buffer = await crunker.concatAudio(buffers)
-  var song = audioCtx.createBufferSource();
-  song.buffer = final_buffer;
-  song.connect(audioCtx.destination);
-  song.start();
+  let final_buffer = await crunker.concatAudio(buffers);
   let output = crunker.export(final_buffer, "audio/mp3");
   crunker.download(output.blob, "tune");
 }
