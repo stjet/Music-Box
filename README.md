@@ -6,7 +6,7 @@ Loop Tune Creator is a tile based music creation website. Currently at https://L
 - Enable looping
 - Listen to your tune on the site
 - Export the file as a txt file and import it back in
-- Save the song as an mp4 file (note gap not supported)
+- Save the song as an mp4 file (note gap not supported, gaps in song also not supported yet)
 - Has 36 notes
 - Adjust length of song (adjust columns)
 
