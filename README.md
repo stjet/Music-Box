@@ -15,3 +15,6 @@ Uses [Crunker](https://github.com/jackedgson/crunker), an awesome library that l
 Hosted on Repl.it. 
 Looks ugly on mobile, sorry.
 If you find a bug please open an issue.
+
+## Known Bugs
+- Saving song as mp4 file does not include note gap or gaps in song

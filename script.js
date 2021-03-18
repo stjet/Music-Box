@@ -62,8 +62,11 @@ async function toggle_select(id) {
   }
 }
 
-function updateColumns() {
+function updateColumns(wipeout=false) {
   let requested_columns_num = Number(document.getElementById("columns").value);
+  if (wipeout) {
+    requested_columns_num = 0;
+  } 
   let difference = Math.abs(column_number_previous-requested_columns_num);
   if (column_number_previous > requested_columns_num) {
     //this means current requested number of columns is less then previous, meaning there was a reduction
@@ -252,6 +255,7 @@ async function file_input() {
   document.getElementById("gap").value = input_file[0].split("|")[2]
   input_file.shift();
   document.getElementById("columns").value = input_file[0].length;
+  updateColumns(wipeout=true)
   updateColumns();
   for (i = 0; i < input_file.length; i++) {
     let row = input_file[i];
