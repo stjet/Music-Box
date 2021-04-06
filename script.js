@@ -172,7 +172,7 @@ async function play_note() {
         eval_string += 'to_play_audio['+String(i)+'].start();';
       } 
       eval(eval_string);
-      await sleep(60000/tempo);
+      await sleep((60000/tempo));
       let eval_string2 = "";
       for (i = 0; i < to_play_audio.length; i++) {
         eval_string2 += 'to_play_audio['+String(i)+'].stop();';

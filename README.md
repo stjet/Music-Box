@@ -18,3 +18,4 @@ If you find a bug please open an issue.
 
 ## Known Bugs
 - Saving song as mp4 file does not include note gap or gaps in song
+- Pause sometimes broken, who knows why though
