@@ -1,8 +1,8 @@
 .note-item {
   border-right: 2px solid black;
   border-top: 2px solid black;
-  height: 35px;
-  width: 35px;
+  height: 34px;
+  width: 34px;
   display: inline-block;
   text-align: center;
 }

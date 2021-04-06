@@ -18,5 +18,5 @@ If you find a bug please open an issue.
 It is also likely I will add support for other instruments with https://tonejs.github.io/.
 
 ## Known Bugs
-- Saving song as mp4 file does not include note gap or gaps in song
+- Saving song as mp4 file does not include note gap or gaps in song (actually gaps in song now probably included?)
 - Pause sometimes broken, who knows why though

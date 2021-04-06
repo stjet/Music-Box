@@ -211,6 +211,7 @@ async function export_as_file() {
     notes.reduce((offset, [ frequency, duration ]) => {
         const oscillatorNode = context.createOscillator();
         oscillatorNode.frequency.value = frequency;
+        oscillatorNode.type = type;
         oscillatorNode.start();
         oscillatorNode.stop(duration);
         oscillatorNode.connect(context.destination);
