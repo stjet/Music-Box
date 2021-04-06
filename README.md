@@ -1,5 +1,5 @@
 # Loop Tune Creator
-Loop Tune Creator is a tile based music creation website. Currently at https://Loop-Tune-Creator.rediar.repl.co.
+Loop Tune Creator is a tile based music creation website made with the Web Audio API. Currently at https://Loop-Tune-Creator.rediar.repl.co.
 
 ## Features
 - Adjust tempo
@@ -15,6 +15,7 @@ Uses [Crunker](https://github.com/jackedgson/crunker), an awesome library that l
 Hosted on Repl.it. 
 Looks ugly on mobile, sorry.
 If you find a bug please open an issue.
+It is also likely I will add support for other instruments with https://tonejs.github.io/.
 
 ## Known Bugs
 - Saving song as mp4 file does not include note gap or gaps in song
