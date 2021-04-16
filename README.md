@@ -1,5 +1,5 @@
-# Loop Tune Creator
-Loop Tune Creator is a tile based music creation website made with the Web Audio API. Currently at https://Loop-Tune-Creator.rediar.repl.co.
+# Music Box
+Music Box is a tile based music creation website made with the Web Audio API. Currently at https://Loop-Tune-Creator.rediar.repl.co.
 
 ## Features
 - Adjust tempo

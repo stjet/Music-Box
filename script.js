@@ -2,7 +2,7 @@
 //above probably fixed
 //https://stackoverflow.com/questions/58029703/is-it-possible-to-convert-frequency-hertz-array-to-audiobuffer-using-javascript
 function export_notes() {
-  let file_contents = String(document.getElementById("tempo").value)+"|"+type+"|"+document.getElementById("gap").value+"\n";
+  let file_contents = String(document.getElementById("tempo").value)+"|"+type+"|"+document.getElementById("gap").value+"|"+document.getElementById("split-beats-into").value+"\n";
   for (i = 0; i < notes.length; i++) {
     for (j = 0; j < document.getElementById("columns").value; j++) {
       if (document.getElementById(notes[i]+"-"+String(j)).classList.contains("selected")) {
@@ -56,7 +56,8 @@ async function toggle_select(id) {
       oscillator.frequency.value = frequencies[notes.indexOf(document.getElementById(id).innerHTML)];
       oscillator.connect(audioCtx.destination);
       oscillator.start()
-      await sleep(60000/tempo);
+      let split_beats_into = Number(document.getElementById("split-beats-into").value);
+      await sleep((60000/tempo)/split_beats_into);
       oscillator.stop()
     }
   }
@@ -172,7 +173,8 @@ async function play_note() {
         eval_string += 'to_play_audio['+String(i)+'].start();';
       } 
       eval(eval_string);
-      await sleep((60000/tempo));
+      let split_beats_into = Number(document.getElementById("split-beats-into").value);
+      await sleep((60000/tempo)/split_beats_into);
       let eval_string2 = "";
       for (i = 0; i < to_play_audio.length; i++) {
         eval_string2 += 'to_play_audio['+String(i)+'].stop();';
@@ -222,16 +224,17 @@ async function export_as_file() {
   let columns = document.getElementById("columns");
   let crunker = new Crunker();
   let buffers = [];
+  let split_beats_into = Number(document.getElementById("split-beats-into").value);
   for (j = 0; j < columns.value; j++) {
     let column_notes = [];
     for (i = 0; i < notes.length; i++) {
       let note = document.getElementById(notes[i]+"-"+String(j));
       if (note.classList.contains("selected")) {
-        column_notes.push([frequencies[notes.indexOf(notes[i])], 60/tempo]);
+        column_notes.push([frequencies[notes.indexOf(notes[i])], (60/tempo)/split_beats_into]);
         console.log(frequencies[notes.indexOf(notes[i])])
       }
     }
-    let length_seconds = 60/tempo;
+    let length_seconds = (60/tempo)/split_beats_into;
     let sampleRate = 44100;
     const offlineAudioContext = new OfflineAudioContext({ length: length_seconds * sampleRate, sampleRate });
     createOscillators(offlineAudioContext, column_notes);
@@ -253,7 +256,9 @@ async function file_input() {
   document.getElementById("tempo").value = input_file[0].split("|")[0];
   type = input_file[0].split("|")[1];
   document.getElementById("type").value = input_file[0].split("|")[1];
-  document.getElementById("gap").value = input_file[0].split("|")[2]
+  document.getElementById("gap").value = input_file[0].split("|")[2];
+	let split_beats_into = input_file[0].split("|")[3];
+	document.getElementById("split-beats-into").value = split_beats_into;
   input_file.shift();
   document.getElementById("columns").value = input_file[0].length;
   updateColumns(wipeout=true)
